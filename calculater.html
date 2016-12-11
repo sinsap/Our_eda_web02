@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel='stylesheet prefetch' href='css/reset.css'>
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calculator</title>
+</head>
+<body>
+<script>
+    var strback="";
+    var num = 0, result = 0, numshow = "0";
+    var operate = 0;
+    var calcul = 0;
+    var quit = 0;
+    function command1(num) {
+        var str = String(document.getElementById("kan").value);              //获得当前显示数据
+        str = (str != "0") ? ((operate == 0) ? str : "") : "";  //如果当前值不是"0",且状态为0,则返回当前值,否则返回空值
+        str = str + String(num);
+        strback += str;
+        document.getElementById("kan").value = str;             //刷新显示
+        operate = 0;                                            //重置输入状态
+        quit = 0;                                               //重置防止重复按键的标志
+        return true;
+    }
+    function clearscreen1() {
+        num = 0;
+        result = 0;
+        numshow = "0";
+        document.getElementById("kan").value = "";
+        return false;
+    }
+    function plus1() {
+        strback += "+";
+        operate = 1;
+        calcul = 1;
+        calculate();
+        return false;
+    }
+    function minus1() {
+        strback += "-";
+        operate = 1;
+        calcul = 2;
+        calculate();
+        return false;
+    }
+    function times1() {
+        strback += "×";
+        operate = 1;
+        calcul = 3;
+        calculate();
+        return false;
+    }
+    function divide1() {
+        strback +="÷" ;
+        operate = 1;
+        calcul = 4;
+        calculate();
+        return false;
+    }
+    function equal1() {
+        quit=1;
+        calculate();
+        operate = 1;
+        num = 0;
+        result = 0;
+        numshow = "0";
+        return false;
+    }
+    function calculate() {
+        numshow = Number(document.getElementById("kan").value);
+        if (/*num != 0 &&*/ quit != 0) {                                  //判断前一个运算符是否为零以及防重复按键的状态
+            switch (calcul) {
+                case 1:
+                    result = num + numshow;
+                    strback +="=";
+                    strback +=String(result);
+                    break;
+                case 2:
+                    result = num - numshow;
+                    strback +="=";
+                    strback +=String(result);
+                    break;
+                case 3:
+                    result = num * numshow;
+                    strback +="=";
+                    strback +=String(result);
+                    break;
+                case 4:
+                    if (numshow != 0) {
+                        result = num / numshow;
+                        strback +="=";
+                        strback +=String(result);
+                    }
+                    else {
+                        document.getElementById("kan").value = "无效操作，被除数为零";
+                            setTimeout(clearnote, 4000);
+                    }
+                    break;
+            }
+            quit = 1;
+        }
+        else {
+            result = numshow;
+        }
+        numshow = String(result);
+        document.getElementById("kan").value = String(numshow);
+        num = result;
+        return false;
+    }
+    function clearnote() {
+        document.getElementById("kan").value = "";
+        return true;
+    }
+    function ei() {
+        alert("尚在开发，敬请期待。。。");
+    }
+    function trackback() {
+        document.getElementById("kan").value = String(strback);
+        strback="";
+    }
+</script>
+<section class="buttons">
+    <div class="container">
+        <p>
+            <input type="text" value="0" id="kan" onfocus="this.blur();" name="numScreen"/>
+        </p>
+        <p>
+            <a class="btn btn-4" id="1" onclick="command1(1)">
+                1
+            </a>
+
+            <a class="btn btn-4" id="2"  onclick="command1(2)">
+                2
+            </a>
+            <a class="btn btn-4" id="3" onclick="command1(3)">
+                3
+            </a>
+            <a class="btn btn-4" id="*" onclick="times1()">
+                ×
+            </a>
+            <a class="btn btn-4" id="+" onclick="plus1()">
+                +
+            </a>
+        </p>
+        <p>
+            <a class="btn btn-4" id="4" onclick="command1(4)">
+                4
+            </a>
+            <a class="btn btn-4" id="5" onclick="command1(5)">
+                5
+            </a>
+            <a class="btn btn-4" id="6"  onclick="command1(6)">
+                6
+            </a>
+            <a class="btn btn-4" id="/"  onclick="divide1()">
+                ÷
+            </a>
+            <a class="btn btn-4" id="C"  onclick="clearscreen1()">
+                C
+            </a>
+        </p>
+        <P>
+            <a class="btn btn-4" id="7"  onclick="command1(7)">
+                7
+            </a>
+            <a class="btn btn-4" id="8" onclick="command1(8)">
+                8
+            </a>
+            <a class="btn btn-4" id="9"  onclick="command1(9)">
+                9
+            </a>
+            <a class="btn btn-4" id="-"  onclick="minus1()">
+                -
+            </a>
+            <a class="btn btn-4" id="="  onclick="equal1()">
+                =
+            </a>
+        </p>
+        <p>
+            <a class="btn btn-4" id="0" style="margin-left: 40px" onclick="command1(0)">
+                0
+            </a>
+        </p>
+        <a class="btn btn-6" onclick="trackback()">
+            <svg>
+                <circle r="24px" cx="25" cy="25" fill="none"></circle>
+            </svg>
+            back
+        </a>
+    </div>
+</section>
+</body>
+</html>
